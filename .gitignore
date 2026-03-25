@@ -1,0 +1,11 @@
+# Local env (secret'lar)
+.env
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+
