@@ -1,0 +1,23 @@
+rest {
+  #
+  # connect_uri TANIMLAMAYARAK startup reachability check'i kapatıyoruz.
+  # API geç kalksa bile FreeRADIUS ayağa kalksın; ilk istek geldiğinde çağrı yapılır.
+  #
+
+  authorize {
+    uri = "http://api:8000/auth"
+    method = 'post'
+    body = 'json'
+    data = '{ "username": "%{User-Name}", "password": "%{User-Password}", "nas_ip_address": "%{%{NAS-IP-Address}:-}" }'
+    timeout = 5.0
+  }
+
+  post-auth {
+    uri = "http://api:8000/authorize"
+    method = 'post'
+    body = 'json'
+    data = '{ "username": "%{User-Name}", "nas_ip_address": "%{%{NAS-IP-Address}:-}" }'
+    timeout = 5.0
+  }
+}
+

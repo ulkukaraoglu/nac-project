@@ -1,0 +1,42 @@
+server default {
+  listen {
+    type = auth
+    ipaddr = *
+    port = 0
+  }
+
+  authorize {
+    #
+    # PAP auth: REST ile doğrula.
+    # API /auth 200 dönerse "OK", 401/403 dönerse "reject/userlock" olur.
+    #
+    if (User-Password) {
+      rest
+
+      if (ok || updated) {
+        # PAP modülü için "bilinen iyi" parola set ediliyor.
+        update control {
+          &Cleartext-Password := "%{User-Password}"
+          &Auth-Type := PAP
+        }
+      }
+    }
+
+    pap
+  }
+
+  authenticate {
+    Auth-Type PAP {
+      pap
+    }
+  }
+
+  post-auth {
+    #
+    # Authentication başarılı olduktan sonra VLAN attribute'ları için /authorize çağır.
+    # API 200 dönerse reply:Tunnel-* attribute'ları reply listesine eklenir.
+    #
+    rest
+  }
+}
+
