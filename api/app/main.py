@@ -13,6 +13,7 @@ from .schemas import ErrorResponse
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     cfg = Settings.from_env()
+    app.state.settings = cfg
 
     # Bağlantı altyapısını "hazır" yapmak: sonraki adımlarda endpoint'ler DB/Redis'i kullanacak.
     try:

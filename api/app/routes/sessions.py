@@ -17,7 +17,6 @@ async def active_sessions(
     # İskelet: radacct içinden "aktif" session sorgusu (start/stop) ileride eklenecek.
     _ = get_postgres_conn(request)
 
-    # DB şeması hazır; bu adımda sadece endpointin dönmesini garanti ediyoruz.
     _ = username
     return []
 

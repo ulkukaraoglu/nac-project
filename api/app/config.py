@@ -17,6 +17,11 @@ class Settings(BaseModel):
     redis_port: int = 6379
     redis_db: int = 0
 
+    # Auth rate limiting (Redis)
+    auth_rate_max_attempts: int = Field(default=5)
+    auth_rate_window_seconds: int = Field(default=60)
+    auth_rate_block_seconds: int = Field(default=300)
+
     @classmethod
     def from_env(cls) -> "Settings":
         # NOTE: Secret'lar local'de `.env` ile gelir; burada hardcode yok.
@@ -30,6 +35,9 @@ class Settings(BaseModel):
             redis_host=os.environ["REDIS_HOST"],
             redis_port=int(os.getenv("REDIS_PORT", "6379")),
             redis_db=int(os.getenv("REDIS_DB", "0")),
+            auth_rate_max_attempts=int(os.getenv("AUTH_RATE_MAX_ATTEMPTS", "5")),
+            auth_rate_window_seconds=int(os.getenv("AUTH_RATE_WINDOW_SECONDS", "60")),
+            auth_rate_block_seconds=int(os.getenv("AUTH_RATE_BLOCK_SECONDS", "300")),
         )
 
 
