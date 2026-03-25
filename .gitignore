@@ -9,3 +9,7 @@ __pycache__/
 # Logs
 *.log
 
+# Docker bind-mount volume verileri (postgres/redis/freeradius runtime)
+volumes/**
+!volumes/**/.gitkeep
+
