@@ -46,6 +46,14 @@ services:
     volumes:
       - ./freeradius/config:/etc/freeradius/custom:ro
       - ./volumes/freeradius/log:/var/log/freeradius
+    entrypoint:
+      - /bin/sh
+      - -lc
+      - "tr -d '\\r' < /etc/freeradius/custom/entrypoint.sh > /tmp/entrypoint.sh && /bin/sh /tmp/entrypoint.sh \"$@\""
+      - --
+    environment:
+      RADIUS_SHARED_SECRET: "${RADIUS_SHARED_SECRET}"
+      RADIUS_REST_AUTH_URL: "${RADIUS_REST_AUTH_URL:-http://api:8000/auth}"
     healthcheck:
       test: ["CMD-SHELL", "ps -ef | grep -q '[f]reeradius'"]
       interval: 10s
