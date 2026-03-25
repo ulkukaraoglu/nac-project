@@ -1,7 +1,6 @@
 fastapi
 uvicorn[standard]
-
-# Postgres/Redis istemcileri (sonraki adımlarda iş mantığı için)
 psycopg[binary]
 redis
+bcrypt
 

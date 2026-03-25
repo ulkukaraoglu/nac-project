@@ -18,9 +18,8 @@ async def lifespan(app: FastAPI):
     try:
         app.state.postgres_conn = await init_postgres(cfg)
         app.state.redis_client = await init_redis(cfg)
-    except Exception as exc:  # noqa: BLE001
-        # Bu adımda hata yönetimini sade tutuyoruz.
-        # Sağlık endpoint'leri çalışmaya devam etse bile diğer endpoint'lerde 500 dönecek.
+    except Exception as exc: 
+        
         app.state.startup_error = str(exc)
     yield
     # Shutdown: bağlantıları kapat.
@@ -45,12 +44,10 @@ async def runtime_error_handler(request: Request, exc: RuntimeError):
 
 @app.get("/health", response_model=dict[str, Any])
 def health() -> dict[str, Any]:
-    # Basit; asıl "servis ayağa kalktı" kontrolü docker healthcheck ile.
     return {"status": "ok"}
 
 
 @app.get("/healthz", response_model=dict[str, Any])
 def healthz() -> dict[str, Any]:
-    # Mevcut compose healthcheck uyumluluğu için alias.
     return {"status": "ok"}
 
