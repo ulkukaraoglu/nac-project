@@ -1,9 +1,9 @@
-from fastapi import FastAPI
+"""
+Backward-compatibility shim.
 
-app = FastAPI(title="nac-api")
+Compose/uvicorn artık `app.main:app` kullanıyor, ama eski bir referans varsa
+bu dosya çalışmaya devam etsin diye gerçek FastAPI instance'ını buradan import ediyoruz.
+"""
 
-
-@app.get("/healthz")
-def healthz():
-    return {"status": "ok"}
+from app.main import app  # noqa: F401
 
